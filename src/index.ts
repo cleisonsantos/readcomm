@@ -1,7 +1,19 @@
-import { Elysia } from "elysia";
+import express from "express";
+import router from "./routes";
 
-const app = new Elysia().get("/", () => "Hello Elysia").listen(3000);
+const app = express();
+app.use(express.json());
+app.use(router);
 
-console.log(
-  `🦊 Elysia is running at ${app.server?.hostname}:${app.server?.port}`
-);
+app.get("/api", (req, res) => {
+  res.send({
+    message: "API is running",
+    version: 0.01,
+  });
+});
+
+const port = Number(process.env.PORT) || 3333;
+
+app.listen(port, () => {
+  console.log(`Server started on port ${port}`);
+});
